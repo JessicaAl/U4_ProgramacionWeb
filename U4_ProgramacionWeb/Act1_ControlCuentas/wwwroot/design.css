@@ -1,0 +1,129 @@
+﻿html, body {
+    background-color: #F7F7F8;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    font-family: Arial;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    background-color: #1cd4fc;
+    color: whitesmoke;
+    padding: 5px;
+    font-family: Arial;
+}
+
+ header div 
+ {
+        height: 49px;
+        overflow: hidden;
+ }
+
+  header div:first-child 
+  {
+            height: 50px;
+            position: relative;
+  }
+
+  header nav 
+  {
+        margin: 0;
+        line-height: 29px;
+        width: 100%;
+        float: left;
+  }
+
+  header div nav ul li img 
+  {
+       width: 70px;
+  }
+
+ header div nav ul li 
+ {
+        padding: 0 20px;
+        text-align: center;
+        display: block;
+        text-decoration: none;
+        font-size: medium;
+        font-weight: bold;
+        line-height: 39px;
+        height: 40px;
+ }
+
+    header ul {
+        height: 30px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        color: white;
+    }
+
+        header ul li {
+            height: 30px;
+            float: left;
+            position: relative;
+        }
+
+        header ul ul li {
+            float: none;
+            height: auto;
+        }
+
+            header ul ul li a {
+                padding: 0 0 0 5px;
+                text-align: left;
+                width: 150px;
+                height: auto;
+            }
+
+        header ul li ul {
+            border: 1px solid #E1E2E4;
+            position: fixed;
+            top: 29px;
+            height: auto;
+            display: none;
+            z-index: 20;
+        }
+
+
+input[type=button], input[type=submit] {
+    font-size: 11pt;
+    background-color: whitesmoke;
+    color: #002B4D;
+    height: 30px;
+    padding: 0 10px;
+    border: 1px solid #E1E2E4;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+    input[type=button]:hover, input[type=submit]:hover, .btn:hover {
+        background-color: #0073cf;
+        color: white;
+    }
+
+
+main {
+    position: absolute;
+    top: 80px;
+    overflow: auto;
+    width: calc(100% - 20px);
+    height: calc(100% - 100px);
+    padding: 5px;
+}
+
+    main a {
+        color: #0073cf;
+        font-size: small;
+    }
+
+.registros {
+    font-size: small;
+    font-weight: bold;
+}
