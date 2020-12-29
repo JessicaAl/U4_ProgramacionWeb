@@ -7,14 +7,16 @@
     <label>Nombre de usuario:</label>
     <input type="Text" name="username" /> <br />
     <br />
-    <label>Contrase&ntildea:</label>
+    <label>Contrase&ntilde;a:</label>
     <input type="password" name="password" /> <br />
     <br />
-    <input type="checkbox" id="recordar" /> <label class="registros">Recu&eacute;rdame</label> <input type="Submit" value="Ingresar"/> <br />
+    <input type="checkbox" id="recordar" /> <label class="registros">Recu&eacute;rdame</label> <br />
+    @Html.ValidationSummary()
+    <input type="Submit" value="Ingresar" /> <br />
     <br />
-    <label class="registros">¿A&uacute;n no tienes una cuenta?</label> <a>Reg&iacute;strate</a>
-        <br />
-        <label class="registros">¿Olvidaste tu contrase&ntilde;a?</label> <a>Recup&eacute;rala</a>
+    <label class="registros">¿A&uacute;n no tienes una cuenta?</label> <a href="~/Home/Registrar">Reg&iacute;strate</a>
+    <br />
+    <label class="registros">¿Olvidaste tu contrase&ntilde;a?</label> <a href="#">Recup&eacute;rala</a>
 </form>
 
 

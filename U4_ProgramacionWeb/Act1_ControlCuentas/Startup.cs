@@ -38,8 +38,9 @@ namespace Act1_ControlCuentas
             }
             
             app.UseRouting();
-            app.UseAuthorization();
+            
             app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();

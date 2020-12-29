@@ -1,0 +1,23 @@
+﻿@{
+    Layout = "_Layout";
+}
+<h1>Regístrate en<br/>VLIVE</h1>
+
+<form>
+    <label>Nombre de usuario:</label>
+    <input type="Text" name="username" /> <br />
+    <br />
+    <label>Correo:</label>
+    <input type="Text" /> <br />
+    <br />
+    <label>Contrase&ntilde;a:</label>
+    <input type="password" name="password" /> <br />
+    <br />
+    <label>Confirmar contraseña:</label>
+    <input type="password" /> <br />
+    <br />
+    @Html.ValidationSummary()
+    <input type="Submit" value="Registrarme" /> <br />
+    <br />
+    <label class="registros">¿Ya tienes una cuenta?</label> <a href="~/Home/IniciarSesion">Inicia sesi&oacute;n</a>
+</form>

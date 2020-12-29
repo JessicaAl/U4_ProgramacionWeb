@@ -40,7 +40,7 @@ header {
 
   header div nav ul li img 
   {
-       width: 70px;
+       width: 50px;
   }
 
  header div nav ul li 
@@ -121,6 +121,13 @@ main {
     main a {
         color: #0073cf;
         font-size: small;
+    }
+    main h1 {
+        font-size: 50px;
+    }
+
+    main form label {
+        font-size: 25px;
     }
 
 .registros {
