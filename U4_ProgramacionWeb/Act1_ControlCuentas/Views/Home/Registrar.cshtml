@@ -1,23 +1,25 @@
-﻿@{
+﻿@model Act1_ControlCuentas.Models.Usuario
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
     Layout = "_Layout";
 }
 <h1>Regístrate en<br/>VLIVE</h1>
 
-<form>
+<form method="post" action="~/Home/Registrar">
     <label>Nombre de usuario:</label>
-    <input type="Text" name="username" /> <br />
+    <input type="text" asp-for="NomUsuario" required /> <br />
     <br />
     <label>Correo:</label>
-    <input type="Text" /> <br />
+    <input type="email" asp-for="Correo" required /> <br />
     <br />
     <label>Contrase&ntilde;a:</label>
-    <input type="password" name="password" /> <br />
+    <input type="password" asp-for="Contra" name="contra1" required /> <br />
     <br />
     <label>Confirmar contraseña:</label>
-    <input type="password" /> <br />
+    <input type="password" asp-for="Contra" name="contra2" required /> <br />
     <br />
     @Html.ValidationSummary()
-    <input type="Submit" value="Registrarme" /> <br />
+    <input type="submit" value="Registrarme" onclick="registrarUsuario()" /> <br />
     <br />
     <label class="registros">¿Ya tienes una cuenta?</label> <a href="~/Home/IniciarSesion">Inicia sesi&oacute;n</a>
 </form>

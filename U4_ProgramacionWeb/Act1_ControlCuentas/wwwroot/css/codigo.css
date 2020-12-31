@@ -1,0 +1,24 @@
+﻿html {
+    margin: 20px;
+}
+
+body {
+    background-color: #F7F7F8;
+    padding: 5px;
+    font-family: Arial;
+    width: 98%;
+    height: 100%;
+}
+
+main {
+   vertical-align:central;
+   align-content:center;
+}
+
+    main h1 {
+        font-size: 50px;
+    }
+
+    main label {
+        font-size: 25px;
+    }

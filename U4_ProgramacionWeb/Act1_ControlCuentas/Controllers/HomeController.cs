@@ -134,7 +134,7 @@ namespace Act1_ControlCuentas.Controllers
                         cliente.UseDefaultCredentials = false;
                         cliente.Credentials = new NetworkCredential("sistemascomputacionales7g@gmail.com", "sistemas7g");
                         cliente.Send(mensaje);
-                        return RedirectToAction("Activar");
+                        return RedirectToAction("ActivarCuenta");
                     }
                     else
                     {
