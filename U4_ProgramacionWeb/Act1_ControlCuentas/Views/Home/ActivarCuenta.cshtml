@@ -1,2 +1,11 @@
-﻿@{
+﻿@model Act1_ControlCuentas.Models.Usuario
+@{
+    Layout = "_Layout";
 }
+
+    <h1>Confirmar mi cuenta</h1>
+    <form method="post" action="~/Home/ActivarCuenta">
+        <p>Ingresa el c&oacute;digo enviado a tu correo</p>
+        <input type="number" name="codigo" required />
+        <input type="submit" value="Confirmar" />
+    </form>

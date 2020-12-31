@@ -1,4 +1,5 @@
-﻿
+﻿@model Act1_ControlCuentas.Models.Usuario
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = "_Layout";
 }
@@ -16,7 +17,7 @@
     <br />
     <label class="registros">¿A&uacute;n no tienes una cuenta?</label> <a href="~/Home/Registrar">Reg&iacute;strate</a>
     <br />
-    <label class="registros">¿Olvidaste tu contrase&ntilde;a?</label> <a href="#">Recup&eacute;rala</a>
+    <label class="registros">¿Olvidaste tu contrase&ntilde;a?</label> <a href="~/Home/RecuperarContra">Recup&eacute;rala</a>
 </form>
 
 
