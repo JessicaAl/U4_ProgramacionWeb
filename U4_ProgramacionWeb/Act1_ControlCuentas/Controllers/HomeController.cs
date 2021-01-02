@@ -40,12 +40,12 @@ namespace Act1_ControlCuentas.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> IniciarSesion(Usuario user, bool recordar)
+        public async Task<IActionResult> IniciarSesion(Usuario usuario, bool recordar)
         {
             ctrlusersContext context = new ctrlusersContext();
             UsuarioRepository<Usuario> repos = new UsuarioRepository<Usuario>(context);
-            var datos = repos.GetUsuarioCorreo(user.Correo);
-            if (datos != null && HashHelper.GetHash(user.Contra) == datos.Contra)
+            var datos = repos.GetUsuarioCorreo(usuario.Correo);
+            if (datos != null && HashHelper.GetHash(usuario.Contra) == datos.Contra)
             {
                 if (datos.Activo == 1)
                 {
@@ -71,13 +71,13 @@ namespace Act1_ControlCuentas.Controllers
                 else
                 {
                     ModelState.AddModelError("", "Tu cuenta no ha sido activada, dirígete al correo para activarla");
-                    return View(user);
+                    return View(usuario);
                 }
             }
             else
             {
-                ModelState.AddModelError("", "El nombre de usuario o la contraseña son incorrectos");
-                return View(user);
+                ModelState.AddModelError("", "El correo electrónico o la contraseña son incorrectos");
+                return View(usuario);
             }
         }
 
@@ -232,6 +232,7 @@ namespace Act1_ControlCuentas.Controllers
             }
         }
 
+        [AllowAnonymous]
         public IActionResult RecuperarContra()
         {
             return View();
@@ -254,7 +255,7 @@ namespace Act1_ControlCuentas.Controllers
                     mensaje.From= new MailAddress("sistemascomputacionales7g@gmail.com", "VLIVE");
                     mensaje.To.Add(correo);
                     mensaje.Subject = "Recupera tu contraseña de VLIVE";
-                    string text = System.IO.File.ReadAllText(Environment.WebRootPath + "/RecuperarContra.html");
+                    string text = System.IO.File.ReadAllText(Environment.WebRootPath + "/Recuperar.html");
                     mensaje.Body = text.Replace("{##defaultPass##}", defaultPass.ToString() );
                     mensaje.IsBodyHtml = true;
 

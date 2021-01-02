@@ -3,6 +3,6 @@
 }
 <h1>Bienvenido a<br/>VLIVE:</h1>
 
-<label>Usuario: @User.Claims.FirstOrDefault(x=>x.Type=="nomUsuario").Value</label>
+<label>Usuario: @User.Claims.FirstOrDefault(x=>x.Type=="Nombre").Value</label>
 <br/>
 <a href="~/Home/CerrarSesion">Cerrar sesión</a><label style="color: #F7F7F8">/-</label> <a href="~/Home/CambiarContra">Cambiar contraseña</a><label style="color: #F7F7F8">/-</label> <a href="~/Home/EliminarCuenta">Eliminar cuenta</a>
