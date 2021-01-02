@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Act1_ControlCuentas", "Act1_ControlCuentas\Act1_ControlCuentas.csproj", "{DDB339B3-7423-440D-9893-8F375114F04E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Act1_ControlCuentas", "Act1_ControlCuentas\Act1_ControlCuentas.csproj", "{DDB339B3-7423-440D-9893-8F375114F04E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Act2_RolesUsuario", "Act2_RolesUsuario\Act2_RolesUsuario.csproj", "{3122463D-7336-4436-B1B1-C095DAF009EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{DDB339B3-7423-440D-9893-8F375114F04E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DDB339B3-7423-440D-9893-8F375114F04E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDB339B3-7423-440D-9893-8F375114F04E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3122463D-7336-4436-B1B1-C095DAF009EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3122463D-7336-4436-B1B1-C095DAF009EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3122463D-7336-4436-B1B1-C095DAF009EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3122463D-7336-4436-B1B1-C095DAF009EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
