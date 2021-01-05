@@ -131,6 +131,12 @@ main {
         font-size: 25px;
     }
 
+    main form {
+        vertical-align: central;
+        align-content: center;
+        text-align: center;
+    }
+
 .registros {
     font-size: small;
     font-weight: bold;
