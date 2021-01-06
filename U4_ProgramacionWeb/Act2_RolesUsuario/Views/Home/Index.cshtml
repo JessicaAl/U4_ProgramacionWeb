@@ -1,5 +1,26 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
 @{
+    Layout = "_Layout";
+}
+
+@if (User.IsInRole("Maestro"))
+{
+    <h1>Bienvenido:</h1>
+    <h3>@User.Claims.FirstOrDefault(x => x.Type == "Nombre").Value</h3>
+    <form>
+        <br />
+        <a href="~/Home/ListaAlumnos/@(int.Parse(User.Claims.FirstOrDefault(x=>x.Type=="Id").Value))">Ver listado de alumnos designados</a> <label style="color: #FFECBC">/-</label> <a href="/Home/CerrarSesion">Cerrar sesión</a>
+        <br />
+    </form>
+}
+@if (User.IsInRole("Director"))
+{
+
+    <h1>Bienvenido</h1>
+    <h3>@User.Claims.FirstOrDefault(x => x.Type == "Nombre").Value</h3>
+    <form>
+        <br />
+        <a href="~/Home/ListaAlumnos/@(int.Parse(User.Claims.FirstOrDefault(x=>x.Type=="Id").Value))">Ver listado de maestros</a> <label style="color: #FFECBC">/-</label> <a href="/Home/CerrarSesion">Cerrar sesión</a>
+        <br />
+    </form>
 }

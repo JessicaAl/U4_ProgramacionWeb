@@ -1,5 +1,46 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Act2_RolesUsuario.Models.ViewModels.AlumnoViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
+    Layout = "_Layout";
 }
+    <h1>Editar datos del alumno</h1>
+    @if (User.IsInRole("Director"))
+    {
+        <form method="post" action="~/Home/EditarAlumno">
+            <input type="hidden" asp-for="Alumno.IdAlumno" />
+            <br />
+            <label>Maestro a cargo:</label>
+            <input  type="text" asp-for="Maestro.Nombre" readonly />
+            <br />
+            <label >No. de control del maestro:</label>
+            <input type="number" asp-for="Maestro.NumControl" readonly />
+            <br />
+            <label>No. de control del alumno:</label>
+            <input type="text" asp-for="Alumno.NoControl" required readonly />
+            <br />
+            <label>Nombre completo:</label>
+            <input type="text" asp-for="Alumno.Nombre" required />
+            <br /><br />
+            @Html.ValidationSummary()
+            <input type="submit" value="Modificar" />
+            <a href="~/Home/ListaAlumnos/@(Model.Maestro.IdMaestro)">Cancelar</a>
+        </form>
+    }
+    else if (User.IsInRole("Maestro"))
+    {
+        <form method="post" action="~/Home/EditarAlumno">
+            <input type="hidden" asp-for="Alumno.IdAlumno" />
+            <input type="text" asp-for="Maestro.Nombre" readonly hidden />
+            <input type="number" asp-for="Maestro.NumControl" readonly hidden />
+            <br />
+            <label>No. de control del alumno:</label>
+            <input type="text" asp-for="Alumno.NoControl" required readonly />
+            <br />
+            <label>Nombre completo:</label>
+            <input type="text" asp-for="Alumno.Nombre" required />
+            <br />
+            @Html.ValidationSummary()
+            <input type="submit" value="Editar" />
+            <a href="~/Home/ListaAlumnos/@(int.Parse(User.Claims.FirstOrDefault(x=>x.Type=="Id").Value))">Cancelar</a>
+        </form>
+    }

@@ -1,5 +1,61 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<Act2_RolesUsuario.Models.Maestro>
 @{
+    Layout = "_Layout";
 }
+<h2>Lista de maestros</h2>
+<a href="~/Home/AceptarMaestro">Agregar maestro</a>
+<div class="lista">
+    <br /><br />
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 10%">No. Control</th>
+                <th style="width: 40%">Nombre</th>
+                <th style="width: 15%">Estado</th>
+                <th style="width: 15%">Grupo</th>
+                <th style="width: 10%"></th>
+                <th style="width: 10%"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var maestro in Model)
+            {
+                <tr>
+                    <td>@maestro.NumControl</td>
+                    <td>@maestro.Nombre</td>
+                    <td id="activo" href="#" onclick="cambioEstado(@maestro.IdMaestro)">@((maestro.Activo==1)?"Activo":"Inactivo")</td>
+                    @if (maestro.Activo == 1)
+                    {
+                        <td>
+                            <a href="~/Home/ListaAlumnos/@maestro.IdMaestro">Ver listado de alumnos</a>
+                        </td>
+                        <td>
+                            <a href="~/Home/EditarMaestro/@maestro.IdMaestro">Editar</a>
+                        </td>
+                        <td>
+                            <a href="~Home/CambiarContraMaestro/@maestro.IdMaestro)">Cambiar contrase&ntilde;a</a>
+                        </td>
+
+                    }
+                    else
+                    {
+                        <td style="color:darkgrey">Funci&oacute;n deshabilitada</td>
+                        <td style="color:darkgrey">Funci&oacute;n deshabilitada</td>
+                        <td style="color:darkgrey">Funci&oacute;n deshabilitada</td>
+                    }
+
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br /><a href="~/Home/Index">Volver a la p&aacute;gina principal</a>
+    <form method="post" action="~/Home/StatusMaestro">
+        <input type="number" id="idMaestro" name="Id" hidden />
+    </form>
+    <script>
+        function cambioEstado(id) {
+            document.getElementById("idMaestro").value = id;
+            document.querySelector("form").submit();
+        }
+    </script>
+</div>

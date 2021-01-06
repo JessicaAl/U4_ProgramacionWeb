@@ -1,5 +1,19 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Act2_RolesUsuario.Models.Maestro
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
+    Layout = "_Layout";
 }
+        <h1>Aceptar un nuevo maestro</h1>
+        <form method="post" action="~/Home/AceptarMaestro">
+            <label >N&uacute;mero de control:</label>
+            <input type="number" asp-for="NumControl" required />
+            <br />
+            <label >Nombre completo:</label>
+            <input type="text" asp-for="Nombre" required />
+            <br />
+            <label >Contrase&ntilde;a:</label>
+            <input type="password" asp-for="MaesContra" required />
+            <br /><br />
+            @Html.ValidationSummary()
+            <input type="submit" value="Aceptar" /> <a href="~/Home/ListaMaestros">Cancelar</a>
+        </form>
