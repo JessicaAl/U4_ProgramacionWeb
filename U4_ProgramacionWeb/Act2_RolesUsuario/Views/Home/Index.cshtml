@@ -20,7 +20,7 @@
     <h3>@User.Claims.FirstOrDefault(x => x.Type == "Nombre").Value</h3>
     <form>
         <br />
-        <a href="~/Home/ListaAlumnos/@(int.Parse(User.Claims.FirstOrDefault(x=>x.Type=="Id").Value))">Ver listado de maestros</a> <label style="color: #FFECBC">/-</label> <a href="/Home/CerrarSesion">Cerrar sesión</a>
+        <a href="~/Home/ListaMaestros/@(int.Parse(User.Claims.FirstOrDefault(x=>x.Type=="Id").Value))">Ver listado de maestros</a> <label style="color: #FFECBC">/-</label> <a href="/Home/CerrarSesion">Cerrar sesión</a>
         <br />
     </form>
 }

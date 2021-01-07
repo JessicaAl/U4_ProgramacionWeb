@@ -11,51 +11,62 @@
             <tr>
                 <th style="width: 10%">No. Control</th>
                 <th style="width: 40%">Nombre</th>
-                <th style="width: 15%">Estado</th>
-                <th style="width: 15%">Grupo</th>
-                <th style="width: 10%"></th>
-                <th style="width: 10%"></th>
+                <th style="width: 5%">Estado</th>
+                <th style="width: 15%">Alumnos</th>
+                <th style="width: 5%"></th>
+                <th style="width: 15%"></th>
+                <th style="width: 5%"></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var maestro in Model)
             {
-                <tr>
-                    <td>@maestro.NumControl</td>
-                    <td>@maestro.Nombre</td>
-                    <td id="activo" href="#" onclick="cambioEstado(@maestro.IdMaestro)">@((maestro.Activo==1)?"Activo":"Inactivo")</td>
-                    @if (maestro.Activo == 1)
-                    {
-                        <td>
-                            <a href="~/Home/ListaAlumnos/@maestro.IdMaestro">Ver listado de alumnos</a>
-                        </td>
-                        <td>
-                            <a href="~/Home/EditarMaestro/@maestro.IdMaestro">Editar</a>
-                        </td>
-                        <td>
-                            <a href="~Home/CambiarContraMaestro/@maestro.IdMaestro)">Cambiar contrase&ntilde;a</a>
-                        </td>
+            <tr>
+                <td>@maestro.NumControl</td>
+                <td>@maestro.Nombre</td>
+                <td>@((maestro.Activo==1)?"Activo":"Inactivo")</td>
+                @if (maestro.Activo == 1)
+                {
+                    <td>
+                        <a href="~/Home/ListaAlumnos/@maestro.IdMaestro">Ver listado de alumnos</a>
+                    </td>
+                    <td>
+                        <a href="~/Home/EditarMaestro/@maestro.IdMaestro">Editar</a>
+                    </td>
+                    <td>
+                        <a href="~/Home/CambiarContraMaestro/@maestro.IdMaestro">Cambiar contrase&ntilde;a</a>
+                    </td>
+                    <td>
+                        <a href="#" onclick="desactivar(@maestro.IdMaestro)">@((maestro.Activo==1)?"Desactivar":"Activar")</a>
+                    </td>
 
-                    }
-                    else
-                    {
-                        <td style="color:darkgrey">Funci&oacute;n deshabilitada</td>
-                        <td style="color:darkgrey">Funci&oacute;n deshabilitada</td>
-                        <td style="color:darkgrey">Funci&oacute;n deshabilitada</td>
-                    }
+                }
+                else
+                {
+                    <td style="color:darkgrey">Funci&oacute;n deshabilitada</td>
+                    <td style="color:darkgrey">Funci&oacute;n deshabilitada</td>
+                    <td style="color:darkgrey">Funci&oacute;n deshabilitada</td>
+                    <td>
+                        <a href="#" onclick="desactivar(@maestro.IdMaestro)">@((maestro.Activo==1)?"Desactivar":"Activar")</a>
+                    </td>
+                }
 
-                </tr>
+            </tr>
             }
         </tbody>
     </table>
-    <br /><a href="~/Home/Index">Volver a la p&aacute;gina principal</a>
-    <form method="post" action="~/Home/StatusMaestro">
-        <input type="number" id="idMaestro" name="Id" hidden />
+    <br /><br /><br /><a href="~/Home/Index">Volver a la p&aacute;gina principal</a>
+
+    <form method="post" action="~/Home/DesactivarMaestro">
+        <input type="number" hidden name="IdMaestro" id="IdMaestro" />
     </form>
     <script>
-        function cambioEstado(id) {
-            document.getElementById("idMaestro").value = id;
-            document.querySelector("form").submit();
+        function desactivar(id) {
+            if (confirm('¿Deseas desactivar/activar el maestro seleccionado?')) {
+                document.getElementById("IdMaestro").value = id;
+                document.querySelector("form").submit();
+            }
         }
     </script>
+
 </div>

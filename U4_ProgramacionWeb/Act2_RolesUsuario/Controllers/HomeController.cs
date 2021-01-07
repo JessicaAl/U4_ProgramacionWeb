@@ -8,7 +8,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
-using static Act2_RolesUsuario.Repositories.RolesRepository<T>;
 using Act2_RolesUsuario.Repositories;
 using System.Linq;
 using Act2_RolesUsuario.Models.ViewModels;
@@ -23,12 +22,63 @@ namespace Act2_RolesUsuario.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public IActionResult InicioDirector()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> InicioDirector(Director dire)
+        {
+            bd_rolesContext context = new bd_rolesContext();
+            RolesRepository<Director> repos = new RolesRepository<Director>(context);
+            var director = context.Director.FirstOrDefault(x => x.NumControl == dire.NumControl);
+
+            try
+            {
+                if (director != null && director.DireContra == HashHelper.GetHash(dire.DireContra))
+                {
+
+                    List<Claim> info = new List<Claim>();
+                    info.Add(new Claim(ClaimTypes.Name, "Director" + director.Nombre));
+                    info.Add(new Claim(ClaimTypes.Role, "Director"));
+                    info.Add(new Claim("NumControl", director.NumControl.ToString()));
+                    info.Add(new Claim("Nombre", director.Nombre));
+                    info.Add(new Claim("Id", director.IdDire.ToString()));
+
+                    var claimIdentity = new ClaimsIdentity(info, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var claimPrincipal = new ClaimsPrincipal(claimIdentity);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimPrincipal, new AuthenticationProperties { IsPersistent = true });
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "El número de control o la contraseña del director son incorrectas");
+                    return View(dire);
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                return View(dire);
+            }
+
+        }
+
+        [AllowAnonymous]
+        public IActionResult InicioMaestro()
+        {
+            return View();
+        }
+
         [AllowAnonymous][HttpPost]
         public async Task<IActionResult> InicioMaestro(Maestro m)
         {
             bd_rolesContext context = new bd_rolesContext();
             MaestroRepository repos = new MaestroRepository(context);
-            var maestro = repos.GetMaestroByNoCtrl(m.NumControl);
+            var maestro = repos.GetMaestroByNoCtrl(m.NumControl.ToString());
             try
             {
                 if (maestro!= null && maestro.MaesContra==HashHelper.GetHash(m.MaesContra))
@@ -66,48 +116,14 @@ namespace Act2_RolesUsuario.Controllers
             }
         }
 
-        [AllowAnonymous]
-        public IActionResult InicioDirector()
-        {
-            return View();
-        }
-
-        [AllowAnonymous] [HttpPost]
-        public async Task<IActionResult> InicioDirector(Director dire)
+        [Authorize(Roles = "Director")]
+        public IActionResult ListaMaestros()
         {
             bd_rolesContext context = new bd_rolesContext();
-            RolesRepository<Director> repos = new RolesRepository<Director>(context);
-            var director = context.Director.FirstOrDefault(x => x.NumControl == dire.NumControl);
+            MaestroRepository repos = new MaestroRepository(context);
+            var maestros = repos.GetAll();
 
-            try
-            {
-                if (dire != null && dire.DireContra == HashHelper.GetHash(director.DireContra))
-                {
-
-                        List<Claim> info = new List<Claim>();
-                        info.Add(new Claim(ClaimTypes.Name, "Docente" + dire.Nombre));
-                        info.Add(new Claim(ClaimTypes.Role, "Maestro"));
-                        info.Add(new Claim("NumControl", director.NumControl.ToString()));
-                        info.Add(new Claim("Nombre", director.Nombre));
-                        info.Add(new Claim("Id", director.IdDire.ToString()));
-
-                        var claimIdentity = new ClaimsIdentity(info, CookieAuthenticationDefaults.AuthenticationScheme);
-                        var claimPrincipal = new ClaimsPrincipal(claimIdentity);
-                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimPrincipal, new AuthenticationProperties { IsPersistent = true });
-                        return RedirectToAction("Index");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "El número de control o la contraseña del director son incorrectas");
-                    return View(dire);
-                }
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", ex.Message);
-                return View(dire);
-            }
-
+            return View(maestros);
         }
 
         [AllowAnonymous]
@@ -130,7 +146,7 @@ namespace Act2_RolesUsuario.Controllers
             MaestroRepository repos = new MaestroRepository(context);
             try
             {
-                var m = repos.GetMaestroByNoCtrl(mas.NumControl);
+                var m = repos.GetMaestroByNoCtrl(mas.NumControl.ToString());
                 if (m==null)
                 {
                     mas.Activo = 1;
@@ -152,7 +168,7 @@ namespace Act2_RolesUsuario.Controllers
         }
 
         [Authorize(Roles = "Director")]
-        public IActionResult StatusMaestro(Maestro m)
+       public IActionResult StatusMaestro(Maestro m)
         {
             bd_rolesContext context = new bd_rolesContext();
             MaestroRepository repos = new MaestroRepository(context);
@@ -168,6 +184,21 @@ namespace Act2_RolesUsuario.Controllers
                 repos.Editar(maestro);
             }
             return RedirectToAction("ListaMaestros");
+        }
+
+        [Authorize(Roles = "Director")]
+        public IActionResult EditarMaestro(int id)
+        {
+            bd_rolesContext context = new bd_rolesContext();
+            MaestroRepository repos = new MaestroRepository(context);
+            var maestro = repos.GetById(id);
+
+            if (maestro == null)
+            {
+                return RedirectToAction("StatusMaestro");
+            }
+
+            return View(maestro);
         }
 
         [Authorize(Roles ="Director")][HttpPost]
@@ -209,40 +240,52 @@ namespace Act2_RolesUsuario.Controllers
         public IActionResult CambiarContraMaestro(Maestro m, string nvaCon, string confirmPass)
         {
             bd_rolesContext context = new bd_rolesContext();
-            MaestroRepository repos =new MaestroRepository(context);
+            MaestroRepository repos = new MaestroRepository(context);
             var maestro = repos.GetById(m.IdMaestro);
             try
             {
-                if (maestro!=null)
+                if (maestro != null)
                 {
-                    if (nvaCon!=confirmPass)
+                    if (nvaCon == confirmPass)
                     {
-                        ModelState.AddModelError("", "Las constraseñas no coinciden");
-                        return View(maestro);
-                    }
-                    else if (maestro.MaesContra==HashHelper.GetHash(nvaCon))
-                    {
-                        ModelState.AddModelError("", "La nueva contraseña no puede ser la misma que la actual");
-                        return View(maestro);
+                        maestro.MaesContra = confirmPass;
+                        maestro.MaesContra = HashHelper.GetHash(nvaCon);
+                        repos.Editar(maestro);
                     }
                     else
                     {
-                        maestro.MaesContra = HashHelper.GetHash(nvaCon);
-                        repos.Editar(maestro);
-                        return RedirectToAction("ListaMaestros");
+                        ModelState.AddModelError("", "Las contraseñas no coinciden");
+                        return View(maestro);
                     }
+
                 }
-                else
-                {
-                    ModelState.AddModelError("", "El docente a modificar no existe");
-                    return View(maestro);
-                }
+                return RedirectToAction("ListaMaestros");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
                 return View(maestro);
             }
+        }
+
+        [HttpPost]
+        public IActionResult DesactivarMaestro(Maestro m)
+        {
+            bd_rolesContext context = new bd_rolesContext();
+            MaestroRepository repos = new MaestroRepository(context);
+            var desactivar = repos.GetById(m.IdMaestro);
+
+            if (desactivar != null && desactivar.Activo == 1)
+            {
+                desactivar.Activo = 0;
+                repos.Editar(desactivar);
+            }
+            else
+            {
+                desactivar.Activo = 1;
+                repos.Editar(desactivar);
+            }
+            return RedirectToAction("ListaMaestros");
         }
 
         [Authorize(Roles = "Maestro, Director")]
@@ -256,7 +299,7 @@ namespace Act2_RolesUsuario.Controllers
             {
                 if (User.IsInRole("Maestro"))
                 {
-                    if (User.Claims.FirstOrDefault(x=>x.Type=="IdMaestro").Value==alumnovm.Maestro.IdMaestro.ToString())
+                    if (User.Claims.FirstOrDefault(x=>x.Type=="Id").Value==alumnovm.Maestro.IdMaestro.ToString())
                     {
                         return View(alumnovm);
                     }
@@ -273,7 +316,8 @@ namespace Act2_RolesUsuario.Controllers
             return View(alumnovm);
         }
 
-        [Authorize(Roles = "Maestro, Director")][HttpPost]
+        [Authorize(Roles = "Maestro, Director")]
+        [HttpPost]
         public IActionResult AgregarAlumno(AlumnoViewModel avm)
         {
             bd_rolesContext contexto = new bd_rolesContext();
@@ -281,27 +325,47 @@ namespace Act2_RolesUsuario.Controllers
             AlumnosRepository arepos = new AlumnosRepository(contexto);
             try
             {
-                if (contexto.Alumno.Any(x=>x.NoControl==avm.Alumno.NoControl))
-                {
-                    ModelState.AddModelError("", "Este número de control ya está registrado");
-                    return View(avm);
-
-                }
-                else
-                {
-                    var maestro = mrepos.GetMaestroByNoCtrl(avm.Maestro.NumControl).IdMaestro;
-                    avm.Alumno.MaesId = maestro;
-                    arepos.Agregar(avm.Alumno);
-                    return RedirectToAction("ListaAlumnos", new { id = maestro });
-                }
+                var idMaes = mrepos.GetMaestroByNoCtrl(avm.Maestro.NumControl.ToString()).IdMaestro;
+                avm.Alumno.MaesId = idMaes;
+                arepos.Agregar(avm.Alumno);
+                return RedirectToAction("ListaAlumnos", new { id = idMaes });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 avm.Maestro = mrepos.GetById(avm.Maestro.IdMaestro);
-                    avm.Maestros = mrepos.GetAll();
+                avm.Maestros = mrepos.GetAll();
                 ModelState.AddModelError("", ex.Message);
                 return View(avm);
             }
+        }
+      
+        [Authorize(Roles = "Maestro, Director")]
+        public IActionResult ListaAlumnos(int id)
+        {
+            bd_rolesContext context = new bd_rolesContext();
+            MaestroRepository repos = new MaestroRepository(context);
+            var maestro = repos.GetAlumnosByMaes(id);
+
+            if (maestro != null)
+            {
+                if (User.IsInRole("Maestro"))
+                {
+                    if (User.Claims.FirstOrDefault(x => x.Type == "Id").Value == maestro.IdMaestro.ToString())
+                    {
+                        return View(maestro);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Denegado");
+                    }
+                }
+                else if (maestro.Activo != 1)
+                    return RedirectToAction("ListaMaestros");
+                else
+                    return View(maestro);
+            }
+            else
+                return RedirectToAction("ListaMaestros");
         }
 
         [Authorize(Roles = "Maestro, Director")]
@@ -328,7 +392,6 @@ namespace Act2_RolesUsuario.Controllers
             }
             else return RedirectToAction("Index");
         }
-
 
         [Authorize(Roles = "Maestro, Director")] [HttpPost]
         public IActionResult EditarAlumno(AlumnoViewModel avm)
@@ -367,16 +430,17 @@ namespace Act2_RolesUsuario.Controllers
         {
             bd_rolesContext context = new bd_rolesContext();
             AlumnosRepository repos = new AlumnosRepository(context);
-            var a = repos.GetById(alumno.IdAlumno);
-            if (a!=null)
+
+            var ae = repos.GetById(alumno.IdAlumno);
+            if (ae != null)
             {
-                repos.Eliminar(a);
+                repos.Eliminar(ae);
             }
             else
             {
-                ModelState.AddModelError("", "El alumno seleccionado no existe");
+                ModelState.AddModelError("", "El alumno a eliminar no se encuentra");
             }
-            return RedirectToAction("ListaAlumnos", new { id = a.MaesId });
+            return RedirectToAction("ListaAlumnos", new { id = ae.MaesId });
         }
 
 

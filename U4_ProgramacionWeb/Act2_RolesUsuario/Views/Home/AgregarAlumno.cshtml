@@ -1,7 +1,7 @@
 ﻿@model Act2_RolesUsuario.Models.ViewModels.AlumnoViewModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    Layout="_Layout"
+    Layout = "_Layout";
 }
 <h1>Agregar alumnos al grupo</h1>
 <form method="post" action="~/Home/AgregarAlumno">
@@ -10,16 +10,27 @@
         <label>Asignar alumno al docente: <input type="text" asp-for="Maestro.Nombre" /></label>
     }
     <br />
-    <label>N&uacute;mero de control del docente:</label> <input id="txtdisplay" type="number" asp-for="Maestro.NumControl" readonly />
+    <label>N&uacute;mero de control del docente:</label> <input type="number" asp-for="Maestro.NumControl" readonly />
     <br />
-    <label >N&uacute;mero de control del alumno:</label>
+    <label>N&uacute;mero de control del alumno:</label>
     <input type="text" asp-for="Alumno.NoControl" required />
     <br />
-    <label >Nombre completo del alumno:</label>
+    <label>Nombre completo del alumno:</label>
     <input type="text" asp-for="Alumno.Nombre" required />
-    <br /><br/>
-    @Html.ValidationSummary()
-    <input type="submit" value="Agregar" />
+    <br /><br />
 
-    <a href="~/Home/ListaAlumnos/@(Model.Maestro.IdMaestro)">Cancelar</a>
+    <input type="submit" value="Agregar" />
+    @if (User.IsInRole("Director"))
+    {
+        <a href="~/Home/ListaAlumnos/@Model.Maestro.NumControl">
+            <input type="button" value="Cancelar" />
+        </a>
+    }
+    else if (User.IsInRole("Maestro"))
+    {
+        <a href="~/Home/ListaAlumnos/@(int.Parse(User.Claims.FirstOrDefault(x=>x.Type=="Id").Value))">
+            <input type="button" value="Cancelar" />
+        </a>
+    }
+    @Html.ValidationSummary()
 </form>

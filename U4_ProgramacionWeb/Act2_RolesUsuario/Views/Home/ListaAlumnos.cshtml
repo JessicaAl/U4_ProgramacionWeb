@@ -11,9 +11,9 @@
             <thead>
                 <tr>
                     <th style="width: 10%">No. Control</th>
-                    <th style="width: 60%">Nombre</th>
-                    <th style="width: 15%"></th>
-                    <th style="width: 15%"></th>
+                    <th style="width: 74%">Nombre</th>
+                    <th style="width: 8%"></th>
+                    <th style="width: 8%"></th>
                 </tr>
             </thead>
             <tbody>
@@ -32,6 +32,9 @@
                 }
             </tbody>
         </table>
+        <br />
+        <br />
+        <br />
         @if (User.IsInRole("Maestro"))
         {
             <a href="~/Home/Index">Volver a la p&aacute;gina principal</a>
@@ -42,15 +45,13 @@
         }
     </div>
 
-
-
 <form method="post" action="~/Home/EliminarAlumno">
-    <input type="number" name="Id" id="idAlumno" hidden />
+    <input type="number" name="IdAlumno" id="IdAlumno" hidden />
 </form>
 <script>
     function eliminar(id)
     {
-            document.getElementById("idAlumno").value = id;
+            document.getElementById("IdAlumno").value = id;
             document.querySelector("form").submit();
     }
 </script>

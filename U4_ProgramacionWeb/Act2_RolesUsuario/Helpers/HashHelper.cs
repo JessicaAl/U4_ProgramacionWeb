@@ -11,15 +11,16 @@ namespace Act2_RolesUsuario.Helpers
     {
         public static string GetHash(string cadena)
         {
-            var sha = SHA256.Create();
-            byte[] codificar = Encoding.UTF8.GetBytes(cadena);
-            byte[] hash = sha.ComputeHash(codificar);
-            string a = "";
-            foreach (var objeto in hash)
+            var alg = SHA256.Create();
+            byte[] codificar = System.Text.Encoding.UTF8.GetBytes(cadena);
+            byte[] hash = alg.ComputeHash(codificar);
+
+            string res = "";
+            foreach (var b in hash)
             {
-                a += objeto.ToString("x2");
+                res += b.ToString("X2");
             }
-            return a;
+            return res;
         }
     }
 }
